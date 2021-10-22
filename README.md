@@ -1,7 +1,7 @@
 Students Infomation
 =======================
 
-* Le Anh Tu
+* NTT
 * 
 * 
 * 
