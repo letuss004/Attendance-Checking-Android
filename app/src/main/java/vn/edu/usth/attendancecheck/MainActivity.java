@@ -1,4 +1,4 @@
-package vn.edu.usth.attendancecheck.view;
+package vn.edu.usth.attendancecheck;
 
 import androidx.appcompat.app.AppCompatActivity;
 
