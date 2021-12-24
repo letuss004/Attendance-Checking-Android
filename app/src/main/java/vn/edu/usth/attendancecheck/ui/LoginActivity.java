@@ -2,23 +2,18 @@ package vn.edu.usth.attendancecheck.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import vn.edu.usth.attendancecheck.MainActivity;
-import vn.edu.usth.attendancecheck.R;
 import vn.edu.usth.attendancecheck.databinding.ActivityLoginBinding;
-import vn.edu.usth.attendancecheck.network.LoginRemoteData;
+import vn.edu.usth.attendancecheck.network.RemoteDataSource;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
-    private LoginRemoteData remoteData;
+    private RemoteDataSource remoteData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
