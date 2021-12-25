@@ -1,4 +1,4 @@
-package vn.edu.usth.attendancecheck.ui;
+package vn.edu.usth.attendancecheck;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,13 +7,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.concurrent.ExecutionException;
+
 import vn.edu.usth.attendancecheck.MainActivity;
 import vn.edu.usth.attendancecheck.databinding.ActivityLoginBinding;
 import vn.edu.usth.attendancecheck.network.RemoteDataSource;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
-    private RemoteDataSource remoteData;
+    private static final RemoteDataSource remote = RemoteDataSource.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,18 +24,28 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         //
-        authenticate();
+        setItemEvent();
+    }
+
+    private void setItemEvent() {
+        binding.loginbtn.setOnClickListener(v -> {
+            authenticate();
+        });
+
     }
 
     private void authenticate() {
-        String email = binding.username.getText().toString();
-        String password = binding.password.getText().toString();
-        boolean success = remoteData.login(email, password);
+        String email = "letuss004@gmail.com";
+        String password = "letuss004";
+//        String email = binding.username.getText().toString();
+//        String password = binding.password.getText().toString();
+        boolean success = remote.login(email, password);
+
         if (success) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         } else {
-
+            binding.username.setText("fail");
         }
     }
 
