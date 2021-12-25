@@ -11,12 +11,10 @@ import vn.edu.usth.attendancecheck.models.LoginResponse;
 import vn.edu.usth.attendancecheck.models.LogoutResponse;
 
 public interface ApiService {
-    /**
-     * todo: finish this
-     */
+
     @POST()
     Call<AttendanceResponse> attendance(
-
+            @Header("Authorization") String token
     );
 
     @POST("api/auth/login")
