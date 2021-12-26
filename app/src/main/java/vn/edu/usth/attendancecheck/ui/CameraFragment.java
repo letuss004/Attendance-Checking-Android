@@ -25,6 +25,8 @@ public class CameraFragment extends Fragment {
     private CodeScanner mCodeScanner;
     private View view;
     private FragmentCameraBinding binding;
+    private final Activity activity = getActivity();
+    private final CodeScannerView scannerView = binding.scannerView;
 
     public CameraFragment() {
         // Required empty public constructor
@@ -62,9 +64,8 @@ public class CameraFragment extends Fragment {
     public void onViewCreated(@NonNull View view,
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final Activity activity = getActivity();
-        CodeScannerView scannerView = binding.scannerView;
         assert activity != null;
+        //
         mCodeScanner = new CodeScanner(activity, scannerView);
         mCodeScanner.setDecodeCallback(
                 (result) -> activity.runOnUiThread(
