@@ -2,21 +2,19 @@ package vn.edu.usth.attendancecheck.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
-import com.budiyev.android.codescanner.DecodeCallback;
-import com.google.zxing.Result;
 
-import vn.edu.usth.attendancecheck.R;
+import vn.edu.usth.attendancecheck.databinding.FragmentCameraBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +23,8 @@ import vn.edu.usth.attendancecheck.R;
  */
 public class CameraFragment extends Fragment {
     private CodeScanner mCodeScanner;
-
+    private View view;
+    private FragmentCameraBinding binding;
 
     public CameraFragment() {
         // Required empty public constructor
@@ -51,26 +50,30 @@ public class CameraFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = FragmentCameraBinding.inflate(inflater, container, false);
+        view = binding.getRoot();
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view,
+                              @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         final Activity activity = getActivity();
-        View root = inflater.inflate(R.layout.fragment_camera, container, false);
-        CodeScannerView scannerView = root.findViewById(R.id.scanner_view);
+        CodeScannerView scannerView = binding.scannerView;
         assert activity != null;
         mCodeScanner = new CodeScanner(activity, scannerView);
-        mCodeScanner.setDecodeCallback(new DecodeCallback() {
-            @Override
-            public void onDecoded(@NonNull final Result result) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-        scannerView.setOnClickListener(view -> mCodeScanner.startPreview());
-        return root;
+        mCodeScanner.setDecodeCallback(
+                (result) -> activity.runOnUiThread(
+                        () -> Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show()
+                )
+        );
+        scannerView.setOnClickListener(
+                v -> mCodeScanner.startPreview()
+        );
     }
 
     /*

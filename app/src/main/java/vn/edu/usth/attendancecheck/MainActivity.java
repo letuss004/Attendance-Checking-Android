@@ -1,18 +1,16 @@
 package vn.edu.usth.attendancecheck;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import vn.edu.usth.attendancecheck.R;
-import vn.edu.usth.attendancecheck.databinding.ActivityLoginBinding;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import vn.edu.usth.attendancecheck.databinding.ActivityMainBinding;
-import vn.edu.usth.attendancecheck.network.RemoteDataSource;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -24,7 +22,13 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-
+        // navigation setup
+        BottomNavigationView navigationView = binding.botNav;
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        assert navHostFragment != null;
+        NavController navController = navHostFragment.getNavController();
+        NavigationUI.setupWithNavController(navigationView, navController);
     }
 
 }

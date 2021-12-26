@@ -1,15 +1,12 @@
 package vn.edu.usth.attendancecheck;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import java.util.concurrent.ExecutionException;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-import vn.edu.usth.attendancecheck.MainActivity;
 import vn.edu.usth.attendancecheck.databinding.ActivityLoginBinding;
 import vn.edu.usth.attendancecheck.network.RemoteDataSource;
 
@@ -29,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setItemEvent() {
         binding.loginbtn.setOnClickListener(v -> authenticate());
-
     }
 
     private void authenticate() {
@@ -59,4 +55,5 @@ public class LoginActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
     }
+
 }

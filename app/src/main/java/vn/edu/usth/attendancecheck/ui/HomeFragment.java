@@ -1,19 +1,15 @@
 package vn.edu.usth.attendancecheck.ui;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import vn.edu.usth.attendancecheck.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import vn.edu.usth.attendancecheck.databinding.FragmentHomeBinding;
 import vn.edu.usth.attendancecheck.network.RemoteDataSource;
 
@@ -73,7 +69,7 @@ public class HomeFragment extends Fragment {
 
 
     /*
-      Private ------------------------------------------------------------------------
+     -------------------------------------Private-----------------------------------
      */
     private void setItemOnClick() {
         binding.logout.setOnClickListener(

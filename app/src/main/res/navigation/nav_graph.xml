@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/homeFragment2">
+    app:startDestination="@id/cameraFragment2">
 
     <fragment
         android:id="@+id/homeFragment2"
@@ -11,13 +11,31 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment2_to_cameraFragment2"
-            app:destination="@id/cameraFragment2" />
+            android:id="@+id/action_homeFragment2_to_currentClassesFragment"
+            app:destination="@id/currentClassesFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/cameraFragment2"
         android:name="vn.edu.usth.attendancecheck.ui.CameraFragment"
         android:label="fragment_camera"
-        tools:layout="@layout/fragment_camera" />
+        tools:layout="@layout/fragment_camera">
+        <action
+            android:id="@+id/action_cameraFragment2_to_historyFragment"
+            app:destination="@id/historyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/currentClassesFragment"
+        android:name="vn.edu.usth.attendancecheck.ui.CurrentClassesFragment"
+        android:label="fragment_current_classes"
+        tools:layout="@layout/fragment_current_classes">
+        <action
+            android:id="@+id/action_currentClassesFragment_to_cameraFragment2"
+            app:destination="@id/cameraFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="vn.edu.usth.attendancecheck.ui.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />
 </navigation>
