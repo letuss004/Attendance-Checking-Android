@@ -2,6 +2,8 @@ package vn.edu.usth.attendancecheck;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +16,6 @@ import vn.edu.usth.attendancecheck.network.RemoteDataSource;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
-    private static final RemoteDataSource remote = RemoteDataSource.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +23,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        binding.tv.setText(remote.getUser().getValue().toString());
 
-        binding.logout.setOnClickListener(v -> {
-            boolean b = remote.logout();
-            Toast.makeText(this, "--" + b, Toast.LENGTH_SHORT).show();
-        });
+
     }
 
 }
