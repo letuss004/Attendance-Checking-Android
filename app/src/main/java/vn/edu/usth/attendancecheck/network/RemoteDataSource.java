@@ -1,7 +1,6 @@
 package vn.edu.usth.attendancecheck.network;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -16,17 +15,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 
-import okhttp3.Credentials;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import vn.edu.usth.attendancecheck.models.LoginResponse;
-import vn.edu.usth.attendancecheck.models.LogoutResponse;
+import vn.edu.usth.attendancecheck.network.responses.LoginResponse;
+import vn.edu.usth.attendancecheck.network.responses.LogoutResponse;
 import vn.edu.usth.attendancecheck.models.User;
 
 public class RemoteDataSource {
@@ -40,8 +36,7 @@ public class RemoteDataSource {
     */
     public static final String BASE_URL = "http://192.168.0.103:8000/";
     //    public static final String BASE_URL = "http://127.0.0.1:8000/";
-    private final OkHttpClient okHttpClient = new OkHttpClient()
-            .newBuilder()
+    private final OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
             .addInterceptor(
                     chain -> {
                         Request originalRequest = chain.request();
@@ -53,8 +48,7 @@ public class RemoteDataSource {
                     }
             )
             .build();
-    private final Gson gson = new GsonBuilder()
-            .setLenient()
+    private final Gson gson = new GsonBuilder().setLenient()
             .excludeFieldsWithoutExposeAnnotation()
             .create();
     private final Retrofit retrofit = new Retrofit.Builder()
@@ -138,5 +132,6 @@ public class RemoteDataSource {
         }
         return false;
     }
+
 
 }

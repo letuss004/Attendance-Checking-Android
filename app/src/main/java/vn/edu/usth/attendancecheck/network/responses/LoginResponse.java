@@ -1,6 +1,8 @@
-package vn.edu.usth.attendancecheck.models;
+package vn.edu.usth.attendancecheck.network.responses;
 
 import com.google.gson.annotations.Expose;
+
+import vn.edu.usth.attendancecheck.models.User;
 
 public class LoginResponse {
     @Expose

@@ -28,9 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setItemEvent() {
-        binding.loginbtn.setOnClickListener(v -> {
-            authenticate();
-        });
+        binding.loginbtn.setOnClickListener(v -> authenticate());
 
     }
 
@@ -49,12 +47,14 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    //todo: perform this
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("email", "put something on here");
     }
 
+    //todo: perform this
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
