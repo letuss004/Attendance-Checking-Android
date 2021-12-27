@@ -1,148 +1,207 @@
-package vn.edu.usth.attendancecheck.ui;
-
-import android.Manifest;
-import android.app.Activity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import com.budiyev.android.codescanner.CodeScanner;
-import com.budiyev.android.codescanner.CodeScannerView;
-
-import java.util.List;
-
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.AppSettingsDialog;
-import pub.devrel.easypermissions.EasyPermissions;
-import vn.edu.usth.attendancecheck.databinding.FragmentCameraBinding;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CameraFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CameraFragment extends Fragment
-        implements EasyPermissions.PermissionCallbacks {
-    private static final String TAG ="CameraFragment" ;
-    private View view;
-    private FragmentCameraBinding binding;
-    private CodeScanner mCodeScanner;
-
-
-    public CameraFragment() {
-        // Required empty public constructor
-    }
-
-
-    public static CameraFragment newInstance(String param1, String param2) {
-        CameraFragment fragment = new CameraFragment();
-        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState) {
-        requireCameraPermisson();
-        binding = FragmentCameraBinding.inflate(inflater, container, false);
-        view = binding.getRoot();
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view,
-                              @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        final Activity activity = getActivity();
-        final CodeScannerView scannerView = binding.scannerView;
-        assert activity != null;
-        //
-        mCodeScanner = new CodeScanner(activity, scannerView);
-        mCodeScanner.setDecodeCallback(
-                (result) -> {
-                    Thread thread = new Thread(
-                            () -> Log.e(TAG, "onViewCreated: " + result.getText())
-                    );
-                    thread.start();
-                }
-        );
-        scannerView.setOnClickListener(
-                v -> mCodeScanner.startPreview()
-        );
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mCodeScanner.startPreview();
-    }
-
-    @Override
-    public void onPause() {
-        mCodeScanner.releaseResources();
-        super.onPause();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            new AppSettingsDialog.Builder(this)
-                    .build()
-                    .show();
-        }
-    }
-
-    /*
-
-     */
-    @AfterPermissionGranted(123)
-    private void requireCameraPermisson() {
-        String[] perm = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
-        if (EasyPermissions.hasPermissions(getContext(), perm)) {
-            Toast.makeText(getContext(), "Open camera", Toast.LENGTH_SHORT).show();
-        } else {
-            EasyPermissions.requestPermissions(
-                    this,
-                    "Need permission beacause of something",
-                    123,
-                    perm
-            );
-        }
-    }
-
-
-}
+//package vn.edu.usth.attendancecheck.ui;
+//
+//import android.content.ContentValues;
+//import android.content.Context;
+//import android.os.Bundle;
+//
+//import androidx.annotation.NonNull;
+//import androidx.annotation.Nullable;
+//import androidx.camera.core.CameraSelector;
+//import androidx.camera.core.ImageAnalysis;
+//import androidx.camera.core.ImageCapture;
+//import androidx.camera.core.ImageCaptureException;
+//import androidx.camera.core.ImageProxy;
+//import androidx.camera.core.Preview;
+//import androidx.camera.lifecycle.ProcessCameraProvider;
+//import androidx.camera.view.PreviewView;
+//import androidx.core.content.ContextCompat;
+//import androidx.fragment.app.Fragment;
+//
+//import android.provider.MediaStore;
+//import android.util.Log;
+//import android.view.LayoutInflater;
+//import android.view.View;
+//import android.view.ViewGroup;
+//import android.widget.Button;
+//import android.widget.Toast;
+//
+//import com.google.common.util.concurrent.ListenableFuture;
+//
+//import java.util.Objects;
+//import java.util.concurrent.ExecutionException;
+//import java.util.concurrent.Executor;
+//
+//import vn.edu.usth.attendancecheck.R;
+//import vn.edu.usth.attendancecheck.databinding.FragmentCameraBinding;
+//
+///**
+// * A simple {@link Fragment} subclass.
+// * Use the {@link CameraFragment#newInstance} factory method to
+// * create an instance of this fragment.
+// */
+//public class CameraFragment extends Fragment
+//        implements ImageAnalysis.Analyzer, View.OnClickListener {
+//    private View view;
+//    private final Context context = requireContext();
+//    private FragmentCameraBinding binding;
+//
+//    // camera variable
+//    private final PreviewView pvvFront = binding.pvvFront;
+//    private final PreviewView pvvBack = binding.pvvBack;
+//    private final Button bCapture = binding.bCapture;
+//    private final ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(context);
+//    private final ImageCapture imageCapture = new ImageCapture.Builder()
+//            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+//            .build();
+//    // Image analysis use case
+//    private final ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
+//            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+//            .build();
+//
+//
+//    /**
+//     *
+//     */
+//    public CameraFragment() {
+//        // Required empty public constructor
+//    }
+//
+//    public static CameraFragment newInstance(String param1, String param2) {
+//        CameraFragment fragment = new CameraFragment();
+//        Bundle args = new Bundle();
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+//
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//    }
+//
+//    @Override
+//    public View onCreateView(@NonNull LayoutInflater inflater,
+//                             ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        binding = FragmentCameraBinding.inflate(inflater, container, false);
+//        view = binding.getRoot();
+//        return view;
+//    }
+//
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        //
+//        bCapture.setOnClickListener(this);
+//        cameraProviderFuture.addListener(
+//                () -> {
+//                    try {
+//                        ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+//                        startCamera(cameraProvider);
+//                    } catch (ExecutionException | InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                },
+//                getMainExecutor()
+//        );
+//    }
+//
+//
+//    /**
+//     * Interface method
+//     *
+//     * @param image:
+//     */
+//    @Override
+//    public void analyze(@NonNull ImageProxy image) {
+//        // image processing here for the current frame
+//        Log.d("TAG", "analyze: got the frame at: " + image.getImageInfo().getTimestamp());
+//        image.close();
+//    }
+//
+//    /**
+//     * Interface method
+//     *
+//     * @param v:
+//     */
+//    @Override
+//    public void onClick(View v) {
+//        capturePhoto();
+//    }
+//
+//    /*
+//    ------------------------------------PRIVATE-----------------------------------------
+//     */
+//    private Executor getMainExecutor() {
+//        return ContextCompat.getMainExecutor(context);
+//    }
+//
+//    /**
+//     * @param cameraProvider:
+//     */
+//    private void startCamera(ProcessCameraProvider cameraProvider) {
+//        cameraProvider.unbindAll();
+//        imageAnalysis.setAnalyzer(getMainExecutor(), this);
+//        // set camera
+//        CameraSelector backCamera = new CameraSelector.Builder()
+//                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+//                .build();
+//        Preview previewBackCamera = new Preview.Builder()
+//                .build();
+//        previewBackCamera.setSurfaceProvider(pvvFront.getSurfaceProvider());
+//
+//        CameraSelector frontCamera = new CameraSelector.Builder()
+//                .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+//                .build();
+//        Preview previewFrontCamera = new Preview.Builder()
+//                .build();
+//        previewBackCamera.setSurfaceProvider(pvvBack.getSurfaceProvider());
+//
+//
+//        //bind to lifecycle:
+//        cameraProvider.bindToLifecycle(
+//                getViewLifecycleOwner(),
+//                backCamera,
+//                previewBackCamera,
+//                imageCapture
+//        );
+//        cameraProvider.bindToLifecycle(
+//                getViewLifecycleOwner(),
+//                frontCamera,
+//                previewFrontCamera,
+//                imageCapture
+//        );
+//    }
+//
+//
+//    /**
+//     *
+//     */
+//    private void capturePhoto() {
+//        long timestamp = System.currentTimeMillis();
+//
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, timestamp);
+//        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+//
+//        imageCapture.takePicture(
+//                new ImageCapture.OutputFileOptions.Builder(
+//                        Objects.requireNonNull(getActivity()).getContentResolver(),
+//                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                        contentValues
+//                ).build(),
+//                getMainExecutor(),
+//                new ImageCapture.OnImageSavedCallback() {
+//                    @Override
+//                    public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+//                        Toast.makeText(requireContext(), "Photo has been saved successfully.", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull ImageCaptureException exception) {
+//                        Toast.makeText(requireContext(), "Error saving photo: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//        );
+//
+//    }
+//}

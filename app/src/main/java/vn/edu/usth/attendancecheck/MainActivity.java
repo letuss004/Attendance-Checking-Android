@@ -18,7 +18,7 @@ import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
 import vn.edu.usth.attendancecheck.databinding.ActivityMainBinding;
-import vn.edu.usth.attendancecheck.ui.CameraFragment;
+import vn.edu.usth.attendancecheck.ui.CodeScannerFragment;
 import vn.edu.usth.attendancecheck.ui.CurrentClassesFragment;
 import vn.edu.usth.attendancecheck.ui.HistoryFragment;
 import vn.edu.usth.attendancecheck.ui.HomeFragment;
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity
     private void openCameraRequirePermission() {
         String[] perm = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(this, perm)) {
-            switchFragment(new CameraFragment());
+            switchFragment(new CodeScannerFragment());
         } else {
             EasyPermissions.requestPermissions(
                     this,
