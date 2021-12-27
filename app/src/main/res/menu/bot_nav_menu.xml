@@ -2,26 +2,49 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/homeFragment2"
+        android:id="@+id/navIcon_home"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="@string/home" />
     <item
-        android:id="@+id/currentClassesFragment"
-
+        android:id="@+id/navIcon_checkList"
         android:icon="@drawable/ic_baseline_checklist_24"
         android:title="@string/checkList" />
     <item
-        android:id="@+id/cameraFragment2"
+        android:id="@+id/navIcon_qr"
         android:icon="@drawable/ic_baseline_qr_code_scanner_24"
         android:title="@string/qr" />
 
     <item
-        android:id="@+id/historyFragment"
+        android:id="@+id/navIcon_history"
         android:icon="@drawable/ic_baseline_history_24"
         android:title="@string/history" />
 
     <item
-        android:id="@+id/menu_iconMenu"
+        android:id="@+id/navIcon_menu"
         android:icon="@drawable/ic_baseline_menu_24"
         android:title="@string/menu" />
 </menu>
+
+<!--<item-->
+<!--android:id="@+id/homeFragment2"-->
+<!--android:icon="@drawable/ic_baseline_home_24"-->
+<!--android:title="@string/home" />-->
+<!--<item-->
+<!--android:id="@+id/currentClassesFragment"-->
+
+<!--android:icon="@drawable/ic_baseline_checklist_24"-->
+<!--android:title="@string/checkList" />-->
+<!--<item-->
+<!--android:id="@+id/cameraFragment2"-->
+<!--android:icon="@drawable/ic_baseline_qr_code_scanner_24"-->
+<!--android:title="@string/qr" />-->
+
+<!--<item-->
+<!--android:id="@+id/historyFragment"-->
+<!--android:icon="@drawable/ic_baseline_history_24"-->
+<!--android:title="@string/history" />-->
+
+<!--<item-->
+<!--android:id="@+id/menu_iconMenu"-->
+<!--android:icon="@drawable/ic_baseline_menu_24"-->
+<!--android:title="@string/menu" />-->
