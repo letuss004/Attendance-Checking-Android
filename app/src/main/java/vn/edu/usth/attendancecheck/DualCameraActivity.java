@@ -1,9 +1,6 @@
 package vn.edu.usth.attendancecheck;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -19,12 +16,9 @@ import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
-import androidx.camera.core.VideoCapture;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -36,15 +30,17 @@ public class DualCameraActivity
         extends AppCompatActivity implements ImageAnalysis.Analyzer {
     private static final String TAG = "DualCameraActivity";
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-    private PreviewView previewView;
+    private PreviewView pvvBack;
     private ImageCapture imageCapture;
+    private PreviewView pvvFont;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dual_camera);
 
-        previewView = findViewById(R.id.pvvBack);
+        pvvBack = findViewById(R.id.pvvBack);
+        pvvFont = findViewById(R.id.pvvFront);
         Button bCapture = findViewById(R.id.bCapture);
         bCapture.setOnClickListener(v -> capturePhoto());
 
@@ -52,32 +48,42 @@ public class DualCameraActivity
         cameraProviderFuture.addListener(
                 () -> {
                     try {
-                        ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                        startCameraX(cameraProvider);
+                        startDualCamera();
                     } catch (ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 },
-                getExecutor());
+                getExecutor()
+        );
     }
 
     private Executor getExecutor() {
         return ContextCompat.getMainExecutor(this);
     }
 
-    @SuppressLint("RestrictedApi")
-    private void startCameraX(ProcessCameraProvider cameraProvider) {
+    private void startDualCamera() throws ExecutionException, InterruptedException {
+        ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
         cameraProvider.unbindAll();
         //
-        CameraSelector cameraSelector = new CameraSelector.Builder()
+        CameraSelector backCamera = new CameraSelector.Builder()
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                 .build();
-        Preview preview = new Preview.Builder()
+        Preview previewBack = new Preview.Builder()
                 .build();
-        preview.setSurfaceProvider(previewView.getSurfaceProvider());
+        previewBack.setSurfaceProvider(pvvBack.getSurfaceProvider());
+
+        CameraSelector fontCamera = new CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                .build();
+        Preview previewFront = new Preview.Builder()
+                .build();
+        previewFront.setSurfaceProvider(pvvFont.getSurfaceProvider());
 
         // Image capture use case
         imageCapture = new ImageCapture.Builder()
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                .build();
+        ImageCapture imageCapture2 = new ImageCapture.Builder()
                 .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                 .build();
 
@@ -90,7 +96,12 @@ public class DualCameraActivity
         imageAnalysis.setAnalyzer(getExecutor(), this);
 
         //bind to lifecycle:
-        cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageCapture);
+        cameraProvider.bindToLifecycle(this, backCamera, previewBack, imageCapture);
+        try {
+            cameraProvider.bindToLifecycle(this, fontCamera, previewFront, imageCapture2);
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "startDualCamera: Multiple LifecycleCameras with use cases are registered to the same LifecycleOwner." );
+        }
     }
 
     @Override
