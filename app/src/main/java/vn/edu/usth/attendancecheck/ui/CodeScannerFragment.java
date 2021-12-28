@@ -13,13 +13,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 
 
-import vn.edu.usth.attendancecheck.DualCameraActivity;
 import vn.edu.usth.attendancecheck.R;
 import vn.edu.usth.attendancecheck.databinding.FragmentCodeScannerBinding;
 
@@ -80,7 +80,7 @@ public class CodeScannerFragment extends Fragment {
                 (result) -> activity.runOnUiThread(
                         () -> {
                             Toast.makeText(getContext(), result.getText(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(requireContext(), DualCameraActivity.class));
+                            switchFragment(new CameraFragment());
                         }
                 )
         );
@@ -104,5 +104,9 @@ public class CodeScannerFragment extends Fragment {
     /*
 
      */
-
+    public void switchFragment(Fragment fragment) {
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, fragment)
+                .commit();
+    }
 }

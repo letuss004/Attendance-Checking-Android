@@ -15,27 +15,37 @@
             app:destination="@id/currentClassesFragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/cameraFragment2"
-        android:name="vn.edu.usth.attendancecheck.ui.CameraFragment"
-        android:label="fragment_camera"
-        tools:layout="@layout/fragment_camera">
-        <action
-            android:id="@+id/action_cameraFragment2_to_historyFragment"
-            app:destination="@id/historyFragment" />
-    </fragment>
+
     <fragment
         android:id="@+id/currentClassesFragment"
         android:name="vn.edu.usth.attendancecheck.ui.CurrentClassesFragment"
         android:label="fragment_current_classes"
         tools:layout="@layout/fragment_current_classes">
+
         <action
-            android:id="@+id/action_currentClassesFragment_to_cameraFragment2"
-            app:destination="@id/cameraFragment2" />
+            android:id="@+id/action_currentClassesFragment_to_codeScannerFragment"
+            app:destination="@id/codeScannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
         android:name="vn.edu.usth.attendancecheck.ui.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="vn.edu.usth.attendancecheck.ui.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" />
+    <fragment
+        android:id="@+id/codeScannerFragment"
+        android:name="vn.edu.usth.attendancecheck.ui.CodeScannerFragment"
+        android:label="fragment_code_scanner"
+        tools:layout="@layout/fragment_code_scanner" >
+        <action
+            android:id="@+id/action_codeScannerFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+        <action
+            android:id="@+id/action_codeScannerFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
 </navigation>
