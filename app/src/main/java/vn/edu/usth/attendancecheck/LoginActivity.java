@@ -2,6 +2,7 @@ package vn.edu.usth.attendancecheck;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import vn.edu.usth.attendancecheck.databinding.ActivityLoginBinding;
 import vn.edu.usth.attendancecheck.network.RemoteDataSource;
 
 public class LoginActivity extends AppCompatActivity {
+    private static final String TAG = "LoginActivity";
     private ActivityLoginBinding binding;
     private static final RemoteDataSource remote = RemoteDataSource.getInstance();
 
@@ -29,8 +31,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void authenticate() {
-        String email = "letuss004@gmail.com";
-        String password = "letuss004";
+        String email = "tula.ba9067@st.usth.edu.vn";
+        String password = "tula.ba9067";
 //        String email = binding.username.getText().toString();
 //        String password = binding.password.getText().toString();
         boolean success = remote.login(email, password);
@@ -38,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         if (success) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+            Log.e(TAG, "authenticate: " + remote.getUser().getValue().getToken() );
         } else {
             binding.username.setText("fail");
         }

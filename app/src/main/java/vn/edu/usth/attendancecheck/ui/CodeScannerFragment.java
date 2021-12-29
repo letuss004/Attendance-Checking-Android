@@ -80,7 +80,7 @@ public class CodeScannerFragment extends Fragment {
                 (result) -> activity.runOnUiThread(
                         () -> {
                             Toast.makeText(getContext(), result.getText(), Toast.LENGTH_SHORT).show();
-                            switchFragment(new CameraFragment());
+                            switchFragment(CameraFragment.newInstance(result.getText()));
                         }
                 )
         );

@@ -32,7 +32,7 @@ public interface ApiService {
             @Header("Authorization") String token
     );
 
-    @POST()
+    @POST("api/attendance/")
     @Multipart
     Call<ResponseBody> attendance(
             @Header("Authorization") String token,
@@ -49,6 +49,20 @@ public interface ApiService {
             @Part RequestBody f1s,
             @Part MultipartBody.Part f2,
             @Part RequestBody f2s
+    );
+
+    @POST("api/attendance/")
+    @Multipart
+    Call<ResponseBody> attendance(
+            @Header("Authorization") String token,
+            @Query("lesson_id") String lessonID,
+            @Query("qr_id") String qrID,
+            @Query("student_id") String studentID,
+            @Part MultipartBody.Part b1,
+            @Part MultipartBody.Part b2,
+            @Part MultipartBody.Part b3,
+            @Part MultipartBody.Part f1,
+            @Part MultipartBody.Part f2
     );
 
 }
