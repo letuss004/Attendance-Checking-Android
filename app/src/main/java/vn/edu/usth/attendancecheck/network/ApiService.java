@@ -1,8 +1,13 @@
 package vn.edu.usth.attendancecheck.network;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import vn.edu.usth.attendancecheck.network.responses.AttendanceResponse;
 import vn.edu.usth.attendancecheck.network.responses.LoginResponse;
@@ -21,13 +26,29 @@ public interface ApiService {
             @Header("Authorization") String token
     );
 
-    @POST()
-    Call<AttendanceResponse> attendance(
-            @Header("Authorization") String token
-    );
 
     @POST()
     Call studentsCourse(
             @Header("Authorization") String token
     );
+
+    @POST()
+    @Multipart
+    Call<ResponseBody> attendance(
+            @Header("Authorization") String token,
+            @Query("lesson_id") String lessonID,
+            @Query("qr_id") String qrID,
+            @Query("student_id") String studentID,
+            @Part MultipartBody.Part b1,
+            @Part RequestBody b1s,
+            @Part MultipartBody.Part b2,
+            @Part RequestBody b2s,
+            @Part MultipartBody.Part b3,
+            @Part RequestBody b3s,
+            @Part MultipartBody.Part f1,
+            @Part RequestBody f1s,
+            @Part MultipartBody.Part f2,
+            @Part RequestBody f2s
+    );
+
 }
