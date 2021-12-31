@@ -104,7 +104,7 @@ public class CodeScannerFragment extends Fragment {
     /*
 
      */
-    public void switchFragment(Fragment fragment) {
+    private void switchFragment(Fragment fragment) {
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, fragment)
                 .commit();

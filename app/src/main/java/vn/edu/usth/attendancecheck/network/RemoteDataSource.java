@@ -38,8 +38,6 @@ public class RemoteDataSource {
     private static RemoteDataSource instance;
     private static User user;
     private final MutableLiveData<User> liveData = new MutableLiveData<>();
-    private final File filePath = Environment.getExternalStoragePublicDirectory("Pictures/");
-
 
     /*
     Retrofit set up things
@@ -179,4 +177,7 @@ public class RemoteDataSource {
                 requestBody
         );
     }
+
+
+
 }

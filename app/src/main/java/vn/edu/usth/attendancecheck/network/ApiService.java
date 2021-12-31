@@ -32,24 +32,6 @@ public interface ApiService {
             @Header("Authorization") String token
     );
 
-    @POST("api/attendance/")
-    @Multipart
-    Call<ResponseBody> attendance(
-            @Header("Authorization") String token,
-            @Query("lesson_id") String lessonID,
-            @Query("qr_id") String qrID,
-            @Query("student_id") String studentID,
-            @Part MultipartBody.Part b1,
-            @Part RequestBody b1s,
-            @Part MultipartBody.Part b2,
-            @Part RequestBody b2s,
-            @Part MultipartBody.Part b3,
-            @Part RequestBody b3s,
-            @Part MultipartBody.Part f1,
-            @Part RequestBody f1s,
-            @Part MultipartBody.Part f2,
-            @Part RequestBody f2s
-    );
 
     @POST("api/attendance/")
     @Multipart
