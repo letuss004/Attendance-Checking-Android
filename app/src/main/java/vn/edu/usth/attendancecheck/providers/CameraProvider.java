@@ -43,7 +43,6 @@ public class CameraProvider implements ImageAnalysis.Analyzer {
     private ImageCapture imageCapture;
     private final List<String> imagesPath = new ArrayList<>();
     private final List<Uri> imagesUri = new ArrayList<>();
-    private final List<Boolean> imagesStatus = new ArrayList<Boolean>();
 
     /**
      * @param previewView:
@@ -52,7 +51,6 @@ public class CameraProvider implements ImageAnalysis.Analyzer {
     private CameraProvider(PreviewView previewView, Fragment fragment) {
         this.previewView = previewView;
         this.fragment = (CameraFragment) fragment;
-
         cameraProviderFuture = ProcessCameraProvider.getInstance(fragment.requireContext());
         cameraProviderFuture.addListener(
                 () -> {
@@ -85,7 +83,11 @@ public class CameraProvider implements ImageAnalysis.Analyzer {
         capturePhoto(false);
     }
 
-    public void capturePhoto(boolean attendance) {
+    public void capturePhotoThenAttendance() {
+        capturePhoto(true);
+    }
+
+    private void capturePhoto(boolean attendance) {
         final long timestamp = System.currentTimeMillis();
         final ContentValues contentValues = new ContentValues();
         contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, timestamp);
@@ -105,9 +107,8 @@ public class CameraProvider implements ImageAnalysis.Analyzer {
                                 + "/Pictures/"
                                 + timestamp
                                 + ".jpg";
-
                         imagesPath.add(path);
-
+                        //
                         InputImage inputImage = null;
                         try {
                             inputImage = InputImage.fromFilePath(
@@ -117,12 +118,11 @@ public class CameraProvider implements ImageAnalysis.Analyzer {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        boolean hasFace = faceDetector.hasFace(inputImage);
-                        imagesStatus.add(hasFace);
-
-                        if (attendance) fragment.checkAttendance();
+                        //
+                        faceDetector.process(inputImage);
+                        //
+                        if (attendance) faceDetector.processThenAttendance(inputImage);
                         fragment.getBCapture().setEnabled(true);
-                        Log.e(TAG, "onImageSaved: " + hasFace);
                     }
 
                     @Override
@@ -194,7 +194,7 @@ public class CameraProvider implements ImageAnalysis.Analyzer {
         return imagesPath;
     }
 
-    public synchronized List<Boolean> getImagesStatus() {
-        return imagesStatus;
+    public CameraFragment getFragment() {
+        return fragment;
     }
 }

@@ -1,52 +1,44 @@
 package vn.edu.usth.attendancecheck.providers;
 
 
-import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.face.Face;
 import com.google.mlkit.vision.face.FaceDetection;
 import com.google.mlkit.vision.face.FaceDetector;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FaceDetectorProvider {
     private final CameraProvider cameraProvider;
+    private final List<Boolean> imagesStatus = new ArrayList<>();
+    private final FaceDetector detector = FaceDetection.getClient();
+
 
     public FaceDetectorProvider(CameraProvider cameraProvider) {
         this.cameraProvider = cameraProvider;
     }
 
-
-    public boolean hasFace(InputImage image) {
-        List<Face> faces = detectFaces(image);
-        return faces.size() > 0;
+    public void process(InputImage inputImage) {
+        detectFaces(inputImage);
     }
 
+    public void processThenAttendance(InputImage inputImage) {
+        detectFacesThenAttendance(inputImage);
+    }
 
-    private List<Face> detectFaces(InputImage image) {
-        AtomicBoolean callbackFinished = new AtomicBoolean(false);
-        // Or use the default options:
-        synchronized (cameraProvider) {
-            while (!callbackFinished.get()) {
-                try {
-                    cameraProvider.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        FaceDetector detector = FaceDetection.getClient();
-        Task<List<Face>> result = detector.process(image)
+    private void detectFacesThenAttendance(InputImage image) {
+        detector.process(image)
                 .addOnCompleteListener(
                         task -> {
-                            callbackFinished.set(true);
-                            synchronized (cameraProvider) {
-                                cameraProvider.notifyAll();
-                            }
+                            imagesStatus.add(task.getResult().size() > 0);
+                            cameraProvider.getFragment().checkAttendance(imagesStatus);
                         }
                 );
-        return result.getResult();
+    }
+
+    private void detectFaces(InputImage image) {
+        detector.process(image)
+                .addOnCompleteListener(task -> imagesStatus.add(task.getResult().size() > 0));
     }
 
 

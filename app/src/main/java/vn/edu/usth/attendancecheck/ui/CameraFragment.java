@@ -14,9 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.List;
+
 import vn.edu.usth.attendancecheck.databinding.FragmentCameraBinding;
 import vn.edu.usth.attendancecheck.network.RemoteDataSource;
 import vn.edu.usth.attendancecheck.providers.CameraProvider;
+import vn.edu.usth.attendancecheck.providers.FaceDetectorProvider;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -108,18 +111,18 @@ public class CameraFragment extends Fragment
                 break;
             case "1":
                 bCapture.setText("Done");
-                camera.capturePhoto(true);
+                camera.capturePhotoThenAttendance();
                 break;
         }
     }
 
 
-    public void checkAttendance() {
+    public void checkAttendance(List<Boolean> imagesStatus) {
         Log.e(TAG, "checkAttendance: " + content);
         remote.checkAttendance(
                 content,
                 camera.getImagesPath(),
-                camera.getImagesStatus()
+                imagesStatus
         );
     }
 
