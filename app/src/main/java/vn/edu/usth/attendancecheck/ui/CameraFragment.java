@@ -114,10 +114,6 @@ public class CameraFragment extends Fragment
     }
 
 
-    /*
-    ------------------------------------PRIVATE-----------------------------------------
-     */
-
     public void checkAttendance() {
         Log.e(TAG, "checkAttendance: " + content);
         remote.checkAttendance(

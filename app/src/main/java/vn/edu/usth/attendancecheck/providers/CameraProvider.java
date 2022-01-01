@@ -2,10 +2,10 @@ package vn.edu.usth.attendancecheck.providers;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.camera.core.CameraSelector;
@@ -20,13 +20,14 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.mlkit.vision.common.InputImage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 import vn.edu.usth.attendancecheck.ui.CameraFragment;
 
@@ -34,15 +35,15 @@ import vn.edu.usth.attendancecheck.ui.CameraFragment;
 public class CameraProvider implements ImageAnalysis.Analyzer {
     private static final String TAG = "CameraProvider";
     private static CameraProvider instance;
-    private final Object holder = new Object();
-    private final ScheduledExecutorService pool = Executors.newScheduledThreadPool(10);
+    private final FaceDetectorProvider faceDetector = new FaceDetectorProvider(this);
     //
-    private final CameraFragment fragment;
     private final ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
+    private final CameraFragment fragment;
     private final PreviewView previewView;
-    private final List<String> imagesPath = new ArrayList<>();
-    private final List<String> imagesStatus = new ArrayList<>();
     private ImageCapture imageCapture;
+    private final List<String> imagesPath = new ArrayList<>();
+    private final List<Uri> imagesUri = new ArrayList<>();
+    private final List<Boolean> imagesStatus = new ArrayList<Boolean>();
 
     /**
      * @param previewView:
@@ -106,10 +107,22 @@ public class CameraProvider implements ImageAnalysis.Analyzer {
                                 + ".jpg";
 
                         imagesPath.add(path);
-                        imagesStatus.add("1");
+
+                        InputImage inputImage = null;
+                        try {
+                            inputImage = InputImage.fromFilePath(
+                                    fragment.requireContext(),
+                                    Objects.requireNonNull(outputFileResults.getSavedUri())
+                            );
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        boolean hasFace = faceDetector.hasFace(inputImage);
+                        imagesStatus.add(hasFace);
+
                         if (attendance) fragment.checkAttendance();
                         fragment.getBCapture().setEnabled(true);
-                        Log.e(TAG, "onImageSaved: Photo has been saved successfully at");
+                        Log.e(TAG, "onImageSaved: " + hasFace);
                     }
 
                     @Override
@@ -181,7 +194,7 @@ public class CameraProvider implements ImageAnalysis.Analyzer {
         return imagesPath;
     }
 
-    public synchronized List<String> getImagesStatus() {
+    public synchronized List<Boolean> getImagesStatus() {
         return imagesStatus;
     }
 }

@@ -125,17 +125,17 @@ public class RemoteDataSource {
 
     public void checkAttendance(@NonNull String content,
                                 @NonNull List<String> imagesPath,
-                                @NonNull List<String> imagesStatus) {
-        MultipartBody.Part b1 = createPart(imagesPath.get(0), "b1");
-        MultipartBody.Part b2 = createPart(imagesPath.get(1), "b2");
-        MultipartBody.Part b3 = createPart(imagesPath.get(2), "b3");
-        MultipartBody.Part f1 = createPart(imagesPath.get(3), "f1");
-        MultipartBody.Part f2 = createPart(imagesPath.get(4), "f2");
-        RequestBody b1s = RequestBody.create(MediaType.parse("text/plain"), imagesStatus.get(0));
-        RequestBody b2s = RequestBody.create(MediaType.parse("text/plain"), imagesStatus.get(1));
-        RequestBody b3s = RequestBody.create(MediaType.parse("text/plain"), imagesStatus.get(2));
-        RequestBody f1s = RequestBody.create(MediaType.parse("text/plain"), imagesStatus.get(3));
-        RequestBody f2s = RequestBody.create(MediaType.parse("text/plain"), imagesStatus.get(4));
+                                @NonNull List<Boolean> imagesStatus) {
+        final MultipartBody.Part b1 = createPart(imagesPath.get(0), "b1");
+        final MultipartBody.Part b2 = createPart(imagesPath.get(1), "b2");
+        final MultipartBody.Part b3 = createPart(imagesPath.get(2), "b3");
+        final MultipartBody.Part f1 = createPart(imagesPath.get(3), "f1");
+        final MultipartBody.Part f2 = createPart(imagesPath.get(4), "f2");
+       final RequestBody b1s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(0)));
+       final RequestBody b2s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(1)));
+       final RequestBody b3s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(2)));
+       final RequestBody f1s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(3)));
+       final RequestBody f2s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(4)));
 
         final Call<ResponseBody> call = service.attendance(
                 "Bearer " + user.getToken(),
@@ -177,7 +177,6 @@ public class RemoteDataSource {
                 requestBody
         );
     }
-
 
 
 }
