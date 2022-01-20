@@ -4,11 +4,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Header;
-import retrofit2.http.Multipart;
-import retrofit2.http.POST;
-import retrofit2.http.Part;
-import retrofit2.http.Query;
+import retrofit2.http.*;
 import vn.edu.usth.attendancecheck.network.responses.AttendanceResponse;
 import vn.edu.usth.attendancecheck.network.responses.LoginResponse;
 import vn.edu.usth.attendancecheck.network.responses.LogoutResponse;
@@ -33,8 +29,6 @@ public interface ApiService {
     );
 
 
-
-
     @POST("api/attendance/")
     @Multipart
     Call<ResponseBody> attendance(
@@ -49,4 +43,8 @@ public interface ApiService {
             @Part MultipartBody.Part f2
     );
 
+    @GET("api/test")
+    Call<ResponseBody> test(
+            @Header("Authorization") String token,
+            @Query("value") String value);
 }

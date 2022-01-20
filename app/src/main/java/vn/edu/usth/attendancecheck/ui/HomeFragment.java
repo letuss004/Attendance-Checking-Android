@@ -78,6 +78,11 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(), "--" + b, Toast.LENGTH_SHORT).show();
                 }
         );
+        binding.qr.setOnClickListener(
+                v -> {
+                    remote.test();
+                }
+        );
     }
 
 

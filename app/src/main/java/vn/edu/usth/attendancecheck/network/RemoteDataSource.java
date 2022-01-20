@@ -131,16 +131,16 @@ public class RemoteDataSource {
         final MultipartBody.Part b3 = createPart(imagesPath.get(2), "b3");
         final MultipartBody.Part f1 = createPart(imagesPath.get(3), "f1");
         final MultipartBody.Part f2 = createPart(imagesPath.get(4), "f2");
-       final RequestBody b1s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(0)));
-       final RequestBody b2s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(1)));
-       final RequestBody b3s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(2)));
-       final RequestBody f1s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(3)));
-       final RequestBody f2s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(4)));
+        final RequestBody b1s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(0)));
+        final RequestBody b2s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(1)));
+        final RequestBody b3s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(2)));
+        final RequestBody f1s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(3)));
+        final RequestBody f2s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(4)));
 
         final Call<ResponseBody> call = service.attendance(
                 "Bearer " + user.getToken(),
-                content.split("/")[content.split("/").length - 1],
                 content.split("/")[content.split("/").length - 2],
+                content.split("/")[content.split("/").length - 1],
                 user.getId(),
                 b1,
                 b2,
@@ -179,4 +179,21 @@ public class RemoteDataSource {
     }
 
 
+    public void test() {
+        Call<ResponseBody> call = service.test("Bearer " + user.getToken(), "This is value");
+        call.enqueue(
+                new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        assert response.body() != null;
+                        Log.e(TAG, "onResponse: " + response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.e(TAG, "onFailure: ", t);
+                    }
+                }
+        );
+    }
 }
