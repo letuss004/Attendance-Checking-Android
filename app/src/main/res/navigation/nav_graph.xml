@@ -3,17 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/homeFragment2">
-
-    <fragment
-        android:id="@+id/homeFragment2"
-        android:name="vn.edu.usth.attendancecheck.ui.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_homeFragment2_to_currentClassesFragment"
-            app:destination="@id/currentClassesFragment" />
-    </fragment>
+            app:startDestination="@id/currentClassesFragment">
 
 
     <fragment
@@ -47,5 +37,6 @@
         <action
             android:id="@+id/action_codeScannerFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <action android:id="@+id/action_codeScannerFragment_self" app:destination="@id/codeScannerFragment"/>
     </fragment>
 </navigation>

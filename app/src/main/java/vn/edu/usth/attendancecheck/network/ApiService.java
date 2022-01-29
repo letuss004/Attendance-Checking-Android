@@ -9,15 +9,17 @@ import vn.edu.usth.attendancecheck.network.responses.AttendanceResponse;
 import vn.edu.usth.attendancecheck.network.responses.LoginResponse;
 import vn.edu.usth.attendancecheck.network.responses.LogoutResponse;
 
+import java.util.List;
+
 public interface ApiService {
 
-    @POST("api/auth/login")
+    @POST("auth/login")
     Call<LoginResponse> login(
             @Query("email") String email,
             @Query("password") String password
     );
 
-    @POST("api/auth/logout")
+    @POST("auth/logout")
     Call<LogoutResponse> logout(
             @Header("Authorization") String token
     );
@@ -29,7 +31,7 @@ public interface ApiService {
     );
 
 
-    @POST("api/attendance/")
+    @POST("attendance/")
     @Multipart
     Call<ResponseBody> attendance(
             @Header("Authorization") String token,
@@ -43,8 +45,20 @@ public interface ApiService {
             @Part MultipartBody.Part f2
     );
 
-    @GET("api/test")
+    @POST("attendance/")
+    @Multipart
+    Call<ResponseBody> attendance(
+            @Header("Authorization") String token,
+            @Query("lesson_id") String lessonID,
+            @Query("qr_id") String qrID,
+            @Query("student_id") String studentID,
+            @Part List<MultipartBody.Part> partList
+    );
+
+    @POST("test/")
     Call<ResponseBody> test(
             @Header("Authorization") String token,
-            @Query("value") String value);
+            @Body List<String> strings
+    );
+
 }

@@ -13,6 +13,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -42,7 +43,10 @@ public class RemoteDataSource {
     /*
     Retrofit set up things
     */
-    public static final String BASE_URL = "http://192.168.0.103:8000/";
+//    public static final String BASE_URL = "http://192.168.0.101:8000/api/";
+//    public static final String BASE_URL = "http://127.0.0.1:8000/api/";
+    public static final String BASE_URL = "http://192.168.1.11:8000/api/";
+
     private final Gson gson = new GsonBuilder().setLenient()
             .excludeFieldsWithoutExposeAnnotation()
             .create();
@@ -131,12 +135,11 @@ public class RemoteDataSource {
         final MultipartBody.Part b3 = createPart(imagesPath.get(2), "b3");
         final MultipartBody.Part f1 = createPart(imagesPath.get(3), "f1");
         final MultipartBody.Part f2 = createPart(imagesPath.get(4), "f2");
-        final RequestBody b1s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(0)));
-        final RequestBody b2s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(1)));
-        final RequestBody b3s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(2)));
-        final RequestBody f1s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(3)));
-        final RequestBody f2s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(4)));
-
+//        final RequestBody b1s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(0)));
+//        final RequestBody b2s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(1)));
+//        final RequestBody b3s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(2)));
+//        final RequestBody f1s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(3)));
+//        final RequestBody f2s = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(imagesStatus.get(4)));
         final Call<ResponseBody> call = service.attendance(
                 "Bearer " + user.getToken(),
                 content.split("/")[content.split("/").length - 2],
@@ -164,8 +167,35 @@ public class RemoteDataSource {
         });
     }
 
+    public void test() {
+        List<String> strings = new ArrayList<>();
+        strings.add("One");
+        strings.add("Two");
+        strings.add("Three");
+        final Call<ResponseBody> call = service.test(
+                "Bearer " + user.getToken(),
+                strings
+        );
+        call.enqueue(
+                new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Log.e(TAG, "onResponse: ");
+                    }
 
-    private MultipartBody.Part createPart(String path, String name) {
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                }
+        );
+    }
+
+    /*
+    -------------------------------------------private----------------------------------------
+     */
+
+    private static MultipartBody.Part createPart(String path, String name) {
         File file = new File(path);
         RequestBody requestBody = RequestBody.create(
                 MediaType.parse("image/*"),
@@ -178,22 +208,4 @@ public class RemoteDataSource {
         );
     }
 
-
-    public void test() {
-        Call<ResponseBody> call = service.test("Bearer " + user.getToken(), "This is value");
-        call.enqueue(
-                new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        assert response.body() != null;
-                        Log.e(TAG, "onResponse: " + response.body());
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e(TAG, "onFailure: ", t);
-                    }
-                }
-        );
-    }
 }

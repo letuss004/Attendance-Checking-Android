@@ -29,6 +29,7 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
+import org.jetbrains.annotations.NotNull;
 import vn.edu.usth.attendancecheck.ui.CameraFragment;
 
 @SuppressLint("StaticFieldLeak")
@@ -48,7 +49,7 @@ public class CameraProvider implements ImageAnalysis.Analyzer {
      * @param previewView:
      * @param fragment:
      */
-    private CameraProvider(PreviewView previewView, Fragment fragment) {
+    private CameraProvider(PreviewView previewView, @NotNull Fragment fragment) {
         this.previewView = previewView;
         this.fragment = (CameraFragment) fragment;
         cameraProviderFuture = ProcessCameraProvider.getInstance(fragment.requireContext());
@@ -72,6 +73,52 @@ public class CameraProvider implements ImageAnalysis.Analyzer {
         return instance;
     }
 
+    /**
+     * @param lenFacing: by default BACK
+     */
+    public synchronized void startCamera(int lenFacing)
+            throws ExecutionException, InterruptedException {
+        ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+        cameraProvider.unbindAll();
+        //
+        CameraSelector cameraSelector = new CameraSelector.Builder()
+                .requireLensFacing(lenFacing)
+                .build();
+        Preview preview = new Preview.Builder()
+                .build();
+        preview.setSurfaceProvider(previewView.getSurfaceProvider());
+
+        // Image capture use case
+        imageCapture = new ImageCapture.Builder()
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                .build();
+
+        // Image analysis use case
+        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build();
+        imageAnalysis.setAnalyzer(getExecutor(), this);
+
+        //bind to lifecycle:
+        cameraProvider.bindToLifecycle(
+                fragment.getViewLifecycleOwner(),
+                cameraSelector,
+                preview,
+                imageCapture
+        );
+    }
+
+    /**
+     * switch from back to front
+     */
+    public void switchCamera() {
+        try {
+            startCamera(CameraSelector.LENS_FACING_FRONT);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void analyze(@NonNull ImageProxy image) {
         // image processing here for the current frame
@@ -79,14 +126,16 @@ public class CameraProvider implements ImageAnalysis.Analyzer {
         image.close();
     }
 
+    /**
+     *
+     */
     public void capturePhoto() {
         capturePhoto(false);
     }
 
-    public void capturePhotoThenAttendance() {
-        capturePhoto(true);
-    }
-
+    /**
+     * @param attendance:
+     */
     private void capturePhoto(boolean attendance) {
         final long timestamp = System.currentTimeMillis();
         final ContentValues contentValues = new ContentValues();
@@ -142,49 +191,10 @@ public class CameraProvider implements ImageAnalysis.Analyzer {
 
     }
 
-    public void switchCamera() {
-        try {
-            startCamera(CameraSelector.LENS_FACING_BACK);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void capturePhotoThenAttendance() {
+        capturePhoto(true);
     }
 
-
-    /**
-     * @param lenFacing:
-     */
-    public synchronized void startCamera(int lenFacing)
-            throws ExecutionException, InterruptedException {
-        ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-        cameraProvider.unbindAll();
-        //
-        CameraSelector cameraSelector = new CameraSelector.Builder()
-                .requireLensFacing(lenFacing)
-                .build();
-        Preview preview = new Preview.Builder()
-                .build();
-        preview.setSurfaceProvider(previewView.getSurfaceProvider());
-
-        // Image capture use case
-        imageCapture = new ImageCapture.Builder()
-                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-                .build();
-
-        // Image analysis use case
-        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build();
-        imageAnalysis.setAnalyzer(getExecutor(), this);
-
-        //bind to lifecycle:
-        cameraProvider.bindToLifecycle(
-                fragment.getViewLifecycleOwner(),
-                cameraSelector,
-                preview,
-                imageCapture
-        );
-    }
 
     private Executor getExecutor() {
         return ContextCompat.getMainExecutor(fragment.requireContext());
