@@ -13,6 +13,8 @@ import vn.edu.usth.attendancecheck.R;
 import vn.edu.usth.attendancecheck.databinding.FragmentUserMenuBinding;
 import vn.edu.usth.attendancecheck.network.RemoteDataSource;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link UserMenuFragment#newInstance} factory method to
@@ -78,7 +80,11 @@ public class UserMenuFragment extends Fragment {
     private void setItemOnClick() {
         binding.test.setOnClickListener(
                 v -> {
-                    remoteDataSource.test();
+                    try {
+                        remoteDataSource.getCurrentClasses();
+                    } catch (ExecutionException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
         );
     }

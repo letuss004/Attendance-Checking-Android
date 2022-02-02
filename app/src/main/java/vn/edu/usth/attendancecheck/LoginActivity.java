@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         if (success) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            Log.e(TAG, "authenticate: " + remote.getUser().getValue().getToken() );
+            Log.e(TAG, "authenticate: " + remote.getUser().getValue().getToken());
         } else {
             binding.username.setText("fail");
         }

@@ -11,7 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import vn.edu.usth.attendancecheck.databinding.FragmentHomeBinding;
+import vn.edu.usth.attendancecheck.models.CurrentClasses;
 import vn.edu.usth.attendancecheck.network.RemoteDataSource;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,8 +78,11 @@ public class HomeFragment extends Fragment {
     private void setItemOnClick() {
         binding.logout.setOnClickListener(
                 v -> {
-                    boolean b = remote.logout();
-                    Toast.makeText(getContext(), "--" + b, Toast.LENGTH_SHORT).show();
+                    try {
+                        remote.getCurrentClasses();
+                    } catch (ExecutionException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
         );
 

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">AttendanceCheck</string>
-    <string name="todo">TODO</string>
     <string name="sign_in">Sign in</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -18,4 +17,6 @@
     <string name="_5">5</string>
     <string name="logout">Logout</string>
     <string name="test">Test</string>
+    <string name="current_courses">Current courses</string>
+    <string name="todo">TODO</string>
 </resources>

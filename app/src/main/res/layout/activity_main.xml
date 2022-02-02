@@ -5,26 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/bg"
     tools:context=".MainActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/botNav"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#111111"
-            app:itemIconTint="@color/white"
-            app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/bot_nav_menu"/>
+        android:id="@+id/botNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#111111"
+        app:itemIconTint="@color/white"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bot_nav_menu" />
 
     <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/botNav"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_graph"/>
-
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/botNav"
+        app:navGraph="@navigation/nav_graph" />
 
 
 </RelativeLayout>
