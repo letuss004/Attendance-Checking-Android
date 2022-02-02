@@ -33,8 +33,10 @@ public class CurrentClassesViewModel extends ViewModel {
 
     public LiveData<List<CurrentClasses>> getCurrentClasses() {
         try {
-            if (remoteDataSource.getCurrentClasses() != null) {
-                liveData.setValue(remoteDataSource.getCurrentClasses());
+            if (liveData.getValue() == null) {
+                List<CurrentClasses> currentClasses = remoteDataSource.getCurrentClasses();
+                if (currentClasses != null)
+                    liveData.setValue(currentClasses);
             }
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
