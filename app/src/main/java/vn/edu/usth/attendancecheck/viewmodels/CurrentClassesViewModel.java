@@ -6,14 +6,15 @@ import androidx.lifecycle.ViewModel;
 
 import vn.edu.usth.attendancecheck.models.CurrentClasses;
 import vn.edu.usth.attendancecheck.network.RemoteDataSource;
+import vn.edu.usth.attendancecheck.repositories.CurrentClassesRepository;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class CurrentClassesViewModel extends ViewModel {
-    private final RemoteDataSource remoteDataSource = RemoteDataSource.getInstance();
     private static CurrentClassesViewModel instance;
     private final MutableLiveData<List<CurrentClasses>> liveData = new MutableLiveData<>();
+    private final CurrentClassesRepository repository = CurrentClassesRepository.getInstance();
 
     private CurrentClassesViewModel() {
         super();
@@ -32,14 +33,9 @@ public class CurrentClassesViewModel extends ViewModel {
     }
 
     public LiveData<List<CurrentClasses>> getCurrentClasses() {
-        try {
-            if (liveData.getValue() == null) {
-                List<CurrentClasses> currentClasses = remoteDataSource.getCurrentClasses();
-                if (currentClasses != null)
-                    liveData.setValue(currentClasses);
-            }
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+        if (liveData.getValue() == null) {
+            List<CurrentClasses> currentClasses = repository.getCurrentClasses();
+            liveData.setValue(currentClasses);
         }
         return liveData;
     }

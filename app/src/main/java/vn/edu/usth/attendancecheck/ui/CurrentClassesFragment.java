@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import vn.edu.usth.attendancecheck.R;
 import vn.edu.usth.attendancecheck.adapters.CurrentClassesAdapter;
 import vn.edu.usth.attendancecheck.databinding.FragmentCurrentClassesBinding;
 import vn.edu.usth.attendancecheck.models.CurrentClasses;
@@ -23,41 +24,13 @@ import vn.edu.usth.attendancecheck.viewmodels.CurrentClassesViewModel;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CurrentClassesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class CurrentClassesFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
     private FragmentCurrentClassesBinding binding;
     private final CurrentClassesViewModel viewModel = CurrentClassesViewModel.getInstance();
     private LiveData<List<CurrentClasses>> liveData;
 
     public CurrentClassesFragment() {
-    }
-
-    public static UserMenuFragment newInstance(String param1, String param2) {
-        UserMenuFragment fragment = new UserMenuFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -81,7 +54,17 @@ public class CurrentClassesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         apiFetching();
         observeLiveData();
-        setItemOnClick();
+    }
+
+
+    /**
+     * @param adapterPosition:
+     */
+    public void switchFragment(int adapterPosition) {
+        getParentFragmentManager().beginTransaction().replace(
+                R.id.nav_host_fragment,
+                ClassFragment.newInstance(adapterPosition)
+        ).commit();
     }
 
 
@@ -117,7 +100,5 @@ public class CurrentClassesFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
     }
 
-    private void setItemOnClick() {
 
-    }
 }

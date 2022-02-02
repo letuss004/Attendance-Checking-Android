@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:id="@+id/current_classes_fragment"
     tools:context=".ui.CurrentClassesFragment">
 
     <TextView
