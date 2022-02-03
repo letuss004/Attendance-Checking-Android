@@ -13,8 +13,8 @@ import java.util.concurrent.ExecutionException;
 
 public class CurrentClassesViewModel extends ViewModel {
     private static CurrentClassesViewModel instance;
-    private final MutableLiveData<List<CurrentClasses>> liveData = new MutableLiveData<>();
     private final CurrentClassesRepository repository = CurrentClassesRepository.getInstance();
+    private final MutableLiveData<List<CurrentClasses>> liveData = new MutableLiveData<>();
 
     private CurrentClassesViewModel() {
         super();

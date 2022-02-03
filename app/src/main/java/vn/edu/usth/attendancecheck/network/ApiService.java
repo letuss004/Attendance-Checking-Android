@@ -5,6 +5,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
 import vn.edu.usth.attendancecheck.network.responses.ClassLessonsResponse;
+import vn.edu.usth.attendancecheck.network.responses.HistoryResponse;
 import vn.edu.usth.attendancecheck.network.responses.StudentCurrentClassesResponse;
 import vn.edu.usth.attendancecheck.network.responses.LoginResponse;
 import vn.edu.usth.attendancecheck.network.responses.LogoutResponse;
@@ -26,7 +27,7 @@ public interface ApiService {
     );
 
 
-    @POST("attendance/")
+    @POST("attendance")
     @Multipart
     Call<ResponseBody> attendance(
             @Header("Authorization") String token,
@@ -41,7 +42,7 @@ public interface ApiService {
             @Query("scores") Map<String, Boolean> scoresList
     );
 
-    @POST("attendance/")
+    @POST("attendance")
     @Multipart
     Call<ResponseBody> attendance(
             @Header("Authorization") String token,
@@ -51,19 +52,19 @@ public interface ApiService {
             @Part List<MultipartBody.Part> partList
     );
 
-    @POST("test/")
+    @POST("test")
     Call<ResponseBody> test(
             @Header("Authorization") String token,
             @Body List<String> strings
     );
 
-    @POST("test/")
+    @POST("test")
     Call<ResponseBody> test(
             @Header("Authorization") String token,
             @Body Map<String, Integer> map
     );
 
-    @POST("student/classes")
+    @POST("student/current/classes")
     Call<StudentCurrentClassesResponse> getStudentCurrentClasses(
             @Header("Authorization") String token
     );
@@ -74,5 +75,10 @@ public interface ApiService {
             @Header("Authorization") String token,
             @Query("student_id") String studentId,
             @Query("course_id") int courseId
+    );
+
+    @POST("student/history/classes")
+    Call<HistoryResponse> getStudentHistoryClasses(
+            @Header("Authorization") String token
     );
 }

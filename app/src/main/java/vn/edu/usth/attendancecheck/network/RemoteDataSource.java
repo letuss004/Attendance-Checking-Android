@@ -30,7 +30,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vn.edu.usth.attendancecheck.models.CurrentClasses;
+import vn.edu.usth.attendancecheck.models.HistoryClasses;
 import vn.edu.usth.attendancecheck.network.responses.ClassLessonsResponse;
+import vn.edu.usth.attendancecheck.network.responses.HistoryResponse;
 import vn.edu.usth.attendancecheck.network.responses.StudentCurrentClassesResponse;
 import vn.edu.usth.attendancecheck.models.User;
 import vn.edu.usth.attendancecheck.network.responses.LoginResponse;
@@ -209,6 +211,25 @@ public class RemoteDataSource {
         return future.get();
     }
 
+    public HistoryResponse getHistoryClasses()
+            throws ExecutionException, InterruptedException {
+        Call<HistoryResponse> call = service.getStudentHistoryClasses(
+                "Bearer " + user.getToken()
+        );
+        Future<HistoryResponse> future = pool.submit(
+                () -> {
+                    Response<HistoryResponse> response;
+                    try {
+                        response = call.execute();
+                        return response.body();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+        );
+        return future.get();
+    }
     /*
     -------------------------------------------private----------------------------------------
      */
@@ -240,4 +261,6 @@ public class RemoteDataSource {
             }
         });
     }
+
+
 }
