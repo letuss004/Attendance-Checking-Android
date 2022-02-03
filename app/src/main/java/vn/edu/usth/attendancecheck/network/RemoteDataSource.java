@@ -30,6 +30,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vn.edu.usth.attendancecheck.models.CurrentClasses;
+import vn.edu.usth.attendancecheck.network.responses.ClassLessonsResponse;
 import vn.edu.usth.attendancecheck.network.responses.StudentCurrentClassesResponse;
 import vn.edu.usth.attendancecheck.models.User;
 import vn.edu.usth.attendancecheck.network.responses.LoginResponse;
@@ -186,10 +187,32 @@ public class RemoteDataSource {
         return currentClasses;
     }
 
+    public ClassLessonsResponse getLessonsAndStatuses(int courseId)
+            throws ExecutionException, InterruptedException {
+        Call<ClassLessonsResponse> call = service.getLessonsAndStatuses(
+                "Bearer " + user.getToken(),
+                user.getId(),
+                courseId
+        );
+        Future<ClassLessonsResponse> future = pool.submit(
+                () -> {
+                    Response<ClassLessonsResponse> response;
+                    try {
+                        response = call.execute();
+                        return response.body();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+        );
+        return future.get();
+    }
 
     /*
     -------------------------------------------private----------------------------------------
      */
+
     private static MultipartBody.Part createPart(String path, String name) {
         File file = new File(path);
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);

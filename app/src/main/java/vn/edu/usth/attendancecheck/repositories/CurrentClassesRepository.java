@@ -3,6 +3,7 @@ package vn.edu.usth.attendancecheck.repositories;
 import androidx.lifecycle.LiveData;
 
 import vn.edu.usth.attendancecheck.models.CurrentClasses;
+import vn.edu.usth.attendancecheck.models.Lessons;
 import vn.edu.usth.attendancecheck.network.RemoteDataSource;
 
 import java.util.List;
@@ -27,5 +28,6 @@ public class CurrentClassesRepository {
         }
         return currentClasses;
     }
+
 
 }

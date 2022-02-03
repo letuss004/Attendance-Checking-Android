@@ -1,7 +1,7 @@
 package vn.edu.usth.attendancecheck.ui;
 
 import android.os.Bundle;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import org.jetbrains.annotations.NotNull;
-import vn.edu.usth.attendancecheck.R;
+
 import vn.edu.usth.attendancecheck.databinding.FragmentUserMenuBinding;
 import vn.edu.usth.attendancecheck.network.RemoteDataSource;
 
@@ -81,7 +81,7 @@ public class UserMenuFragment extends Fragment {
         binding.test.setOnClickListener(
                 v -> {
                     try {
-                        remoteDataSource.getCurrentClasses();
+                        remoteDataSource.getLessonsAndStatuses(1);
                     } catch (ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }

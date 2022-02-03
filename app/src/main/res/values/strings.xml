@@ -19,4 +19,6 @@
     <string name="test">Test</string>
     <string name="current_courses">Current courses</string>
     <string name="todo">TODO</string>
+    <string name="lesson_name">Lesson Name</string>
+    <string name="time_here">Time here</string>
 </resources>

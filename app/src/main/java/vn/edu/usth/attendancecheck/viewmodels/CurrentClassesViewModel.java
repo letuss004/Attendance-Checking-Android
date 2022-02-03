@@ -21,9 +21,8 @@ public class CurrentClassesViewModel extends ViewModel {
     }
 
     public synchronized static CurrentClassesViewModel getInstance() {
-        if (instance == null) {
+        if (instance == null)
             instance = new CurrentClassesViewModel();
-        }
         return instance;
     }
 
@@ -37,6 +36,10 @@ public class CurrentClassesViewModel extends ViewModel {
             List<CurrentClasses> currentClasses = repository.getCurrentClasses();
             liveData.setValue(currentClasses);
         }
+        return liveData;
+    }
+
+    public LiveData<List<CurrentClasses>> getLiveData() {
         return liveData;
     }
 }

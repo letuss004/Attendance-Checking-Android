@@ -4,6 +4,7 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
+import vn.edu.usth.attendancecheck.network.responses.ClassLessonsResponse;
 import vn.edu.usth.attendancecheck.network.responses.StudentCurrentClassesResponse;
 import vn.edu.usth.attendancecheck.network.responses.LoginResponse;
 import vn.edu.usth.attendancecheck.network.responses.LogoutResponse;
@@ -67,4 +68,11 @@ public interface ApiService {
             @Header("Authorization") String token
     );
 
+
+    @POST("course/lessons")
+    Call<ClassLessonsResponse> getLessonsAndStatuses(
+            @Header("Authorization") String token,
+            @Query("student_id") String studentId,
+            @Query("course_id") int courseId
+    );
 }

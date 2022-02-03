@@ -1,5 +1,6 @@
 package vn.edu.usth.attendancecheck.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,8 @@ public class CurrentClassesFragment extends Fragment {
     private FragmentCurrentClassesBinding binding;
     private final CurrentClassesViewModel viewModel = CurrentClassesViewModel.getInstance();
     private LiveData<List<CurrentClasses>> liveData;
+    private RecyclerView recyclerView;
+    private CurrentClassesAdapter adapter;
 
     public CurrentClassesFragment() {
     }
@@ -81,18 +84,25 @@ public class CurrentClassesFragment extends Fragment {
         liveData = viewModel.getCurrentClasses();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void observeLiveData() {
         liveData.observe(
                 getViewLifecycleOwner(),
-                currentClasses -> setupRecyclerView()
+                currentClasses -> {
+                    if (recyclerView == null)
+                        setupRecyclerView();
+                    else {
+                        adapter.notifyDataSetChanged();
+                    }
+                }
         );
     }
 
 
     private void setupRecyclerView() {
-        RecyclerView recyclerView = binding.currentClassesRV;
+        recyclerView = binding.currentClassesRV;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        CurrentClassesAdapter adapter = new CurrentClassesAdapter(
+        adapter = new CurrentClassesAdapter(
                 this,
                 Objects.requireNonNull(liveData.getValue())
         );
