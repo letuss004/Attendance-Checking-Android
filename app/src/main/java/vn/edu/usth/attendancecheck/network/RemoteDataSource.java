@@ -165,9 +165,8 @@ public class RemoteDataSource {
         });
     }
 
-    public List<CurrentClasses> getCurrentClasses()
+    public StudentCurrentClassesResponse getCurrentClasses()
             throws ExecutionException, InterruptedException {
-        List<CurrentClasses> currentClasses = null;
         Call<StudentCurrentClassesResponse> call = service.getStudentCurrentClasses(
                 "Bearer " + user.getToken()
         );
@@ -183,10 +182,7 @@ public class RemoteDataSource {
                     }
                 }
         );
-        if (future.get() != null) {
-            currentClasses = future.get().getCurrentClasses();
-        }
-        return currentClasses;
+        return future.get();
     }
 
     public ClassLessonsResponse getLessonsAndStatuses(int courseId)

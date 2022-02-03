@@ -5,11 +5,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import vn.edu.usth.attendancecheck.models.CurrentClasses;
-import vn.edu.usth.attendancecheck.network.RemoteDataSource;
 import vn.edu.usth.attendancecheck.repositories.CurrentClassesRepository;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class CurrentClassesViewModel extends ViewModel {
     private static CurrentClassesViewModel instance;
@@ -33,7 +31,7 @@ public class CurrentClassesViewModel extends ViewModel {
 
     public LiveData<List<CurrentClasses>> getCurrentClasses() {
         if (liveData.getValue() == null) {
-            List<CurrentClasses> currentClasses = repository.getCurrentClasses();
+            List<CurrentClasses> currentClasses = repository.getResponse();
             liveData.setValue(currentClasses);
         }
         return liveData;
