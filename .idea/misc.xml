@@ -20,6 +20,7 @@
         <entry key="..\:/ProgrammingProject/AttendanceCheckAndroid/app/src/main/res/layout/login.xml" value="0.36666666666666664" />
         <entry key="..\:/ProgrammingProject/AttendanceCheckAndroid/app/src/main/res/menu/bot_nav_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/ProgrammingProject/AttendanceCheckAndroid/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.3828125" />
+        <entry key="app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.196875" />
         <entry key="app/src/main/res/drawable/ic_baseline_done_24.xml" value="0.37083333333333335" />
         <entry key="app/src/main/res/drawable/ic_baseline_qr_code_scanner_24.xml" value="0.37083333333333335" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.3546875" />

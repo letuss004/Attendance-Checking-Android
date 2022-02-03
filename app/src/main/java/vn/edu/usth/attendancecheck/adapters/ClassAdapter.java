@@ -26,9 +26,8 @@ public class ClassAdapter
     private final ClassLessonsResponse response;
     private final ClassFragment fragment;
 
-    public ClassAdapter(
-            @NonNull ClassFragment fragment,
-            @NonNull ClassLessonsResponse response) {
+    public ClassAdapter(@NonNull ClassFragment fragment,
+                        @NonNull ClassLessonsResponse response) {
         this.fragment = fragment;
         this.response = response;
     }
@@ -55,12 +54,19 @@ public class ClassAdapter
         holder.lessonName.setText(
                 response.getLessons().get(position).getName()
         );
-//        holder.time.setText(
-//                response.getLessons().get(position).getCreateAt().toString()
-//        );
-//        holder.status.setImageDrawable(
-//                Drawable.createFromPath("ic_baseline_done_24.xml")
-//        );
+        if (response.getLessons().get(position).getCreateAt() != null)
+            holder.time.setText(
+                    response.getLessons().get(position).getCreateAt().toString()
+            );
+        if (response.getStatuses().get(position).equals(1))
+            holder.status.setImageResource(
+                    R.drawable.ic_baseline_done_24
+            );
+        else {
+            holder.status.setImageResource(
+                    R.drawable.ic_baseline_close_24
+            );
+        }
     }
 
     @Override
@@ -91,18 +97,6 @@ public class ClassAdapter
             this.lessonName = itemView.findViewById(R.id.lesson_name);
             this.time = itemView.findViewById(R.id.create_at);
             this.status = itemView.findViewById(R.id.status);
-        }
-
-        public TextView getLessonName() {
-            return lessonName;
-        }
-
-        public TextView getTime() {
-            return time;
-        }
-
-        public ImageView getStatus() {
-            return status;
         }
     }
 }
