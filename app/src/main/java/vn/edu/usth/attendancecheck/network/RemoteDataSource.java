@@ -48,10 +48,19 @@ public class RemoteDataSource {
     */
 //    public static final String BASE_URL = "http://192.168.0.101:8000/api/";
 //    public static final String BASE_URL = "http://127.0.0.1:8000/api/";
-    public static final String BASE_URL = "http://192.168.1.11:8000/api/";
+//    public static final String BASE_URL = "http://192.168.1.11:8000/api/";
+//    public static final String BASE_URL = "http://192.168.0.103:8000/api/";
+    public static final String BASE_URL = "http://10.10.14.254:8000/api/";
 
-    private final Gson gson = new GsonBuilder().setLenient().excludeFieldsWithoutExposeAnnotation().create();
-    private final Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create(gson)).build();
+    private final Gson gson = new GsonBuilder()
+            .setLenient()
+            .excludeFieldsWithoutExposeAnnotation()
+            .create();
+    private final Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(
+                    GsonConverterFactory.create(gson)
+            ).build();
     // instance use for calling other api method
     private final ApiService service = retrofit.create(ApiService.class);
     private final ScheduledExecutorService pool = Executors.newScheduledThreadPool(10);

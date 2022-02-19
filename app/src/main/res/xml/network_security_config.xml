@@ -4,10 +4,11 @@
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">127.0.0.1</domain>
         <domain includeSubdomains="true">127.0.0.1:8000</domain>
-        <domain includeSubdomains="true">127.0.0.1:8080</domain>
+        <domain includeSubdomains="true">127.0.0.1:8080/</domain>
         <domain includeSubdomains="true">192.168.1.11</domain>
         <domain includeSubdomains="true">192.168.1.11:8000/</domain>
         <domain includeSubdomains="true">192.168.0.103:8000</domain>
         <domain includeSubdomains="true">192.168.0.103</domain>
+        <domain includeSubdomains="true">10.10.14.254:8000</domain>
     </domain-config>
 </network-security-config>
