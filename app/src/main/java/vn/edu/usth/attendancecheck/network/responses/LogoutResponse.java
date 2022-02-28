@@ -1,4 +1,4 @@
-package vn.edu.usth.attendancecheck.models;
+package vn.edu.usth.attendancecheck.network.responses;
 
 import com.google.gson.annotations.Expose;
 

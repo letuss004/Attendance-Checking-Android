@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class User {
     @Expose

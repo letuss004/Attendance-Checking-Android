@@ -1,8 +1,5 @@
 package vn.edu.usth.attendancecheck.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class UserType {
     public static String getUserType(int id) {
         if (id == 1) {
